@@ -18,5 +18,20 @@ library(ggplot2)
 stock <- read.csv("stock_returns_train.csv")
 
 stock 
+
+serie1 <- ts(data = stock$X1, frequency = 12)
+plot(serie1)
+
+serie2 <- ts(data = stock$X2, frequency = 12)
+plot(serie2)
+
+serie3 <- ts(data = stock$X3, frequency = 12)
+plot(serie3)
+
+serie4 <- ts(data = stock$X4, frequency = 12)
+plot(serie4)
+
+serie5 <- ts(data = stock$X5, frequency = 12)
+plot(serie5)
 ```
 
