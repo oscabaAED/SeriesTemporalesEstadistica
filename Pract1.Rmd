@@ -35,3 +35,73 @@ serie5 <- ts(data = stock$X5, frequency = 12)
 plot(serie5)
 ```
 
+```{r Extracción de ventana}
+serie1_train <- ts(serie1[1:(5*12)], frequency = frequency(serie1))
+plot(serie1_train)
+serie1_test <- ts(serie1[((5*12) + 1):length(serie1)], frequency = frequency(serie1))
+```
+
+
+```{r Eliminación de la estacionalidad, determinación D}
+# Primero se calculas diferencias sucesivas
+dserie1 <- diff(serie1_train, lag = frequency(serie1))
+plot(dserie1)
+ddserie1 <- diff(dserie1, lag = frequency(serie1))
+plot(ddserie1)
+dddserie1 <- diff(ddserie1, lag = frequency(serie1))
+plot(dddserie1)
+ddddserie1 <- diff(dddserie1, lag = frequency(serie1))
+plot(ddddserie1)
+```
+
+```{r Eliminación de la tendencia, determinación de la d}
+dserie1 <- diff(serie1_train)
+plot(dserie1)
+ddserie1 <- diff(dserie1)
+plot(ddserie1)
+dddserie1 <- diff(ddserie1)
+plot(dddserie1)
+ddddserie1 <- diff(dddserie1)
+plot(ddddserie1)
+```
+
+
+Ahora vemos si se cumple la hipótesis de homocedasticidad:
+
+```{r Homocedasticidad}
+# Se grafica la serie elevada al cuadrado (al hacer la resta la media se ha ido)
+plot(dddserie1^2)
+
+# Contraste de hipótesis Goldfeld-Quandt para la comprobación de la homocedasticidad
+library(lmtest)
+gqtest( lm(x~.,data=as.data.frame(dddserie1)) )
+```
+```{r Gráficos de correlación}
+acf(serie1_train,lag.max=60)
+pacf(serie1_train,lag.max=60)
+```
+
+```{r Elección de los parámetros}
+vec_mayus11 <- c()
+vec_minus11 <- 
+
+vec_mayus12 <- 
+vec_minus12 <- 
+
+vec_mayus13 <- 
+vec_minus13 <- 
+
+vec_mayus14 <- 
+vec_minus14 <- 
+```
+
+
+```{r Creación de los modelos}
+Pasajeros_model1 <- arima(serie1_train, order=vec_minus11, seasonal=list(order=vec_minus11, period=frequency(serie1_train)))
+
+
+Pasajeros_model2 <- arima(serie1_train, order=vec_minus12, seasonal=list(order=vec_minus12, period=frequency(serie1_train)))
+
+Pasajeros_model3 <- arima(serie1_train, order=vec_minus12, seasonal=list(order=vec_minus12, period=frequency(serie1_train)))
+```
+
