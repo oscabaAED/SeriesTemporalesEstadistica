@@ -1,0 +1,17 @@
+---
+title: "Proyecto"
+author: "Óscar Camacho Barreda"
+date: "2025-10-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+stock <- read.csv("stock_returns_train.csv")
+
+stock
+```
+
