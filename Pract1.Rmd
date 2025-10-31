@@ -10,8 +10,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+library(readr)
+library(forecast)
+library(lmtest)
+library(ggplot2)
+
 stock <- read.csv("stock_returns_train.csv")
 
-stock
+stock 
 ```
 
