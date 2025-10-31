@@ -6,14 +6,10 @@
 library(readr)
 library(forecast)
 remove(list=ls())
-Total
 ## **Ejemplo**: Tráfico comercial, aeropuerto de Valencia. Fuente: Ministerio de transportes, movilidad y agenda urbana (https://www.fomento.gob.es/BE/?nivel=2&orden=03000000).  
-
-setwd("~/Documents/estadistica/estadistica_y_optimizacion_master/material_anna/2024-2025/Rfile/Rfile_mod")
 
 Dat_Pasajeros <- read.csv(file="Pasajeros.csv",header=TRUE,sep=";")
 attach(Dat_Pasajeros)
-Total
 
 T <- length(Total)
 Pasajeros_ts <- ts(Total[121:T],start=c(2010,1),end=c(2019,12),frequency=12)
