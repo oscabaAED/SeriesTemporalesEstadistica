@@ -81,27 +81,59 @@ acf(serie1_train,lag.max=60)
 pacf(serie1_train,lag.max=60)
 ```
 
-```{r Elección de los parámetros}
-vec_mayus11 <- c()
-vec_minus11 <- 
+A la vista de las gráficas anteriores estimamos que $p = q = 2$ y $Q = 0$, pero para $P$ no sabemos si se trata de $2$ o $0$. Tenemos entonces dos modelos candidatos.
 
-vec_mayus12 <- 
-vec_minus12 <- 
+```{r Estimación de los parámetros}
 
-vec_mayus13 <- 
-vec_minus13 <- 
+vec_minus11 <- c(p = 2, d = 0, q = 2)
 
-vec_mayus14 <- 
-vec_minus14 <- 
+vec_mayus11 <- c(P = 0, D = 0, Q = 0)
+vec_mayus12 <- c(P = 2, D = 0, Q = 0)
 ```
 
+Creamos dos modelos, con las dos posibles elecciones de parámetros.
 
 ```{r Creación de los modelos}
-Pasajeros_model1 <- arima(serie1_train, order=vec_minus11, seasonal=list(order=vec_minus11, period=frequency(serie1_train)))
+
+model1 <- arima(serie1_train, order=vec_minus11, seasonal=list(order=vec_mayus11, period=frequency(serie1_train)))
 
 
-Pasajeros_model2 <- arima(serie1_train, order=vec_minus12, seasonal=list(order=vec_minus12, period=frequency(serie1_train)))
-
-Pasajeros_model3 <- arima(serie1_train, order=vec_minus12, seasonal=list(order=vec_minus12, period=frequency(serie1_train)))
+model2 <- arima(serie1_train, order=vec_minus11, seasonal=list(order=vec_mayus12, period=frequency(serie1_train)))
 ```
 
+Pero hay una función interna que nos estimas los mejores valores óptimos de los parámetros del modelo. Entonces, vamos a comparar el resultado de esta función llamada `auto.arima`.
+
+```{r Estimación con auto.arima}
+Modelo_auto <- auto.arima(serie1_train, d=0, D=0, max.p = 2, max.q = 2, max.P = 2, max.Q = 2)
+Modelo_auto
+```
+
+El método estima que los parámetros son nulos todos. Para ver cual es el método que mejor ajusta, usamos la función `accuracy`.
+
+```{r Comparación de modelos}
+accuracy(Modelo_auto)
+accuracy(model1)
+accuracy(model2)
+```
+**Los modelos propuestos son mejores que el dado por la función `auto.arima`.**
+
+```{r Comparación de la estimación}
+fitval <- model2$residuals # Valores ajustados
+
+plot(serie1_train,ylab="Num Pasajeros")
+lines(fitval,col="red")
+```
+
+El modelo hace una predicción aceptable.
+
+```{r}
+plot(forecast(model1, h=36))
+lines(serie1, col = "red")
+lines(model1$residuals, col="blue")
+```
+
+```{r}
+plot(forecast(model2, h=36))
+lines(serie1, col = "red")
+lines(model2$residuals, col="blue")
+```
